@@ -1,0 +1,22 @@
+*Spawn* Cha1 auf spawning-square in Setting1
+	Item: Pfeil und Bogen liegt neben dem P
+		"Press x to pick up"
+*3 Zombies erscheinen*
+*2 davon mit Pathfinding, 3 bleibt stehen(immun gegen Pfeile)*
+	P muss Z1 + Z2 mit dem Bogen töten
+*Sprechblase -> Z3: "OH SHIT, du kannst dich ja gar nicht bewegen! - …eine Sekunde…
+	Ziel-Gate bewegt sich in den Spieler
+			"So - das muss noch gedebuggt werden"
+
+*Blackscreen*
+
+*Spawn* Cha2 auf spawning-square in Setting1/Z3 aus vorherigem Setting noch da
+	Item: Sword liegt neben P
+		"Press x to pick up"
+*Sprechblase -> Z3 "…so…jetzt muss der nur noch alle Monster besiegen"*
+*Z3 bekommt KI und greift P an*
+	P tötet Z3
+	Ziel-Finale erscheint in Im Setting
+	P muss in Ziel-Finale laufen
+
+*Blackscreen (Szenenwechsel)/ Display Text: "Setting 1 - complete"
