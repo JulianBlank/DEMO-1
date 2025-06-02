@@ -13,17 +13,18 @@ public class DungeonPlayerController : MonoBehaviour
     public Vector2 attackBoxSize = new Vector2(1f, 1f);
     public LayerMask enemyLayer;
     public int damage = 1;
+    [SerializeField] private Sprite north;
+    [SerializeField] private Sprite south;
+    [SerializeField] private Sprite west;
+    [SerializeField] private Sprite east;
+
+    private SpriteRuntimeEditor spriteChanger;
 
     private void Start()
     {
         target = transform.position;
-    }
-
-
-    private void ChangeAnimation()
-    {
-        
-
+        // SpriteChanger auf dem gleichen GameObject
+        spriteChanger = GetComponent<SpriteRuntimeEditor>();
     }
 
     private void Update()
@@ -37,10 +38,27 @@ public class DungeonPlayerController : MonoBehaviour
 
         // Bewegung
         Vector3 moveDirection = (target - transform.position).normalized;
+
         if (moveDirection != Vector3.zero)
         {
             lastMoveDirection = moveDirection;
+
+            if (Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y))
+            {
+                if (moveDirection.x > 0)
+                    spriteChanger.ChangeSprite(west);
+                else
+                    spriteChanger.ChangeSprite(east);
+            }
+            else
+            {
+                if (moveDirection.y > 0)
+                    spriteChanger.ChangeSprite(north);
+                else
+                    spriteChanger.ChangeSprite(south);
+            }
         }
+
 
         transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
 

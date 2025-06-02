@@ -1060,6 +1060,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   damage: 10
+  north: {fileID: 4814271557941635497, guid: cb4fb52acbebe8c4b9ae51bb4236e855, type: 3}
+  south: {fileID: 2324236343598682440, guid: 2b9e40bbec197b444bc42a40f391be4b, type: 3}
+  west: {fileID: 3373983171478037719, guid: de1b39145e1376d48a01baebf9bdd927, type: 3}
+  east: {fileID: -2097619832946416524, guid: ecb16fc133673954b9759e418d479e8a, type: 3}
 --- !u!61 &1809196337
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1118,7 +1122,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
@@ -1177,7 +1181,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: db750325989564987a34393247d883b4, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1197,8 +1201,8 @@ Transform:
   m_GameObject: {fileID: 1809196335}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.3405, y: 1.8026, z: 0}
-  m_LocalScale: {x: 1.1614516, y: 3.0209117, z: 1}
+  m_LocalPosition: {x: -2.4448, y: 1.7766, z: 0}
+  m_LocalScale: {x: 2.9528744, y: 2.968952, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1225,10 +1229,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1809196335}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83196946f6db40b4db47fdc7533015a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 466b04c58fc88624d972e322177f6bea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 1809196335}
 --- !u!1 &1973496265
 GameObject:
   m_ObjectHideFlags: 0
