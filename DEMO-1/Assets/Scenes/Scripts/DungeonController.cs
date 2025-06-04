@@ -1,33 +1,51 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class DungeonRoomManager : MonoBehaviour
 {
     [Header("Gegner")]
     public GameObject[] enemyPrefabs;
-    public Transform[] spawnPointsInitial;
 
-    [Header("Progress")]
-    public GameObject interactButton;      // Legacy Button (wird aktiviert)
-    public GameObject doorToNextRoom;      // Tür, die entfernt wird
-    public GameObject[] spawnPointsNext;   // Weitere Spawnpunkte (werden aktiviert)
+    [Header("Räume in Reihenfolge")]
+    public List<DungeonRoom> dungeonRooms;
 
-    private int aliveEnemies;
+    private int currentRoomIndex = 0;
+    private int aliveEnemies = 0;
 
     void Start()
     {
-        SpawnEnemies(spawnPointsInitial);
-        if (interactButton != null) interactButton.SetActive(false); // Start: Button versteckt
+        StartRoom(currentRoomIndex);
     }
 
-    void SpawnEnemies(Transform[] points)
+    void StartRoom(int index)
     {
-        aliveEnemies = points.Length;
-
-        foreach (Transform point in points)
+        if (index >= dungeonRooms.Count)
         {
+            Debug.Log("Kein weiterer Raum vorhanden.");
+            return;
+        }
+
+        DungeonRoom room = dungeonRooms[index];
+
+        // Button deaktivieren (erscheint erst wenn Gegner tot)
+        if (room.progressButton != null)
+            room.progressButton.SetActive(false);
+
+        // Gegner spawnen
+        SpawnEnemies(room.spawnPoints);
+    }
+
+    void SpawnEnemies(GameObject[] spawnPointObjects)
+    {
+        aliveEnemies = spawnPointObjects.Length;
+
+        foreach (GameObject obj in spawnPointObjects)
+        {
+            Transform spawn = obj.transform;
+
             GameObject enemy = Instantiate(
                 enemyPrefabs[Random.Range(0, enemyPrefabs.Length)],
-                point.position,
+                spawn.position,
                 Quaternion.identity
             );
 
@@ -42,36 +60,32 @@ public class DungeonRoomManager : MonoBehaviour
 
         if (aliveEnemies <= 0)
         {
-            Debug.Log("Alle Gegner besiegt!");
-            if (interactButton != null)
-                interactButton.SetActive(true); // Button freischalten
-        }
-    }
-    public void ProgressToNextRoom()
-    {
-        Debug.Log("Raumfortschritt wird durchgeführt");
+            DungeonRoom currentRoom = dungeonRooms[currentRoomIndex];
 
-        // Tür löschen
-        if (doorToNextRoom != null)
-        {
-            Destroy(doorToNextRoom);
-            Debug.Log("Tür zum nächsten Raum entfernt");
-        }
-
-        // Neue Spawnpunkte aktivieren und umwandeln
-        Transform[] spawnPoints = new Transform[spawnPointsNext.Length];
-        for (int i = 0; i < spawnPointsNext.Length; i++)
-        {
-            GameObject obj = spawnPointsNext[i];
-            if (obj != null)
+            if (currentRoom.progressButton != null)
             {
-                obj.SetActive(true);
-                spawnPoints[i] = obj.transform;
+                currentRoom.progressButton.SetActive(true);
             }
         }
-
-        // Gegner spawnen
-        SpawnEnemies(spawnPoints);
     }
-    
+
+    public void OnRoomProgressButtonClicked()
+    {
+        DungeonRoom currentRoom = dungeonRooms[currentRoomIndex];
+
+        // Tür zerstören
+        if (currentRoom.doorToNextRoom != null)
+        {
+            Destroy(currentRoom.doorToNextRoom);
+        }
+
+        // Button nur einmal benutzbar machen
+        if (currentRoom.progressButton != null)
+        {
+            currentRoom.progressButton.SetActive(false);
+        }
+
+        currentRoomIndex++;
+        StartRoom(currentRoomIndex);
+    }
 }
