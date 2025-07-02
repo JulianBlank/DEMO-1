@@ -15,7 +15,7 @@ public class AttachOnProximity : MonoBehaviour
             isAttached = true;
             // Optionally disable physics or collisions here
         }
-        if (istAttached == true && Input.GetKey(KeyCode.Q) == true)
+        if (isAttached == true && Input.GetKey(KeyCode.Q) == true)
         {
             isAttached = false;
         }
