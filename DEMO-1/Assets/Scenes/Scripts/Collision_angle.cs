@@ -13,7 +13,7 @@ public class Reflexion_winkel : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         // Ursprüngliche Bewegungsrichtung (vor dem Abprallen)
-        Vector3 incomingVelocity = rb.velocity.normalized;
+        Vector3 incomingVelocity = rb.linearVelocity.normalized;
 
         // Normale am Auftreffpunkt
         Vector3 surfaceNormal = collision.contacts[0].normal;
