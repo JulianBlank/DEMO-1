@@ -7,8 +7,8 @@ public class AttachOnProximity : MonoBehaviour
     public Vector3 offset = new Vector3(1f, 0f, 0f); // Offset relative to player
 
     private bool isAttached = false;
-    private Renderer objectRenderer;
-    private Texture originalTexture;
+    public Renderer objectRenderer;
+    public Texture sword;
 
     void Start()
     {
@@ -16,7 +16,7 @@ public class AttachOnProximity : MonoBehaviour
 
         if (objectRenderer != null && objectRenderer.material.HasProperty("_MainTex"))
         {
-            originalTexture = objectRenderer.material.mainTexture;
+            objectRenderer.material.mainTexture = originalTexture;
         }
         else
         {
@@ -56,7 +56,7 @@ public class AttachOnProximity : MonoBehaviour
         isAttached = false;
         if (objectRenderer != null && originalTexture != null)
         {
-            objectRenderer.material.mainTexture = originalTexture;
+            objectRenderer.material.mainTexture = sword;
         }
     }
 }
