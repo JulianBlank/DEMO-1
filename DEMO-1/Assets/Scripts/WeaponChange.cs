@@ -11,11 +11,11 @@ public class AttachOnProximity : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Sprite originalSprite;
     private bool canpickup;
-    private float resetpickup = 1f;
+    private float resetpickup = 3f;
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-
+        canpickup = true;
         if (spriteRenderer == null)
         {
             Debug.LogWarning("No SpriteRenderer found on this GameObject.");
@@ -53,6 +53,7 @@ public class AttachOnProximity : MonoBehaviour
         {
             StartCoroutine(ResetPickupcooldown());
             isAttached = true;
+            canpickup = false;
             transform.SetParent(player);
             transform.localPosition = offset;
 
