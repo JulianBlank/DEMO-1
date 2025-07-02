@@ -9,7 +9,6 @@ public class AttachOnProximity : MonoBehaviour
 
     private bool isAttached = false;
     private Renderer objectRenderer;
-    private Texture originalTexture;
 
     void Start()
     {
@@ -17,7 +16,6 @@ public class AttachOnProximity : MonoBehaviour
 
         if (objectRenderer != null && objectRenderer.material.HasProperty("_MainTex"))
         {
-            originalTexture = objectRenderer.material.mainTexture;
             objectRenderer.material.mainTexture = sword_tex;
         }
         else
@@ -64,7 +62,7 @@ public class AttachOnProximity : MonoBehaviour
         transform.SetParent(null);
 
         // Restore the original texture
-        if (objectRenderer != null && originalTexture != null)
+        if (objectRenderer != null && sword_tex != null)
         {
             objectRenderer.material.mainTexture = originalTexture;
         }
