@@ -114,4 +114,14 @@ public class DungeonPlayerController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(attackCenter, attackBoxSize);
     }
+
+    public void setattackrange(float atkrange)
+    {
+        attackRange = atkrange;
+    }
+
+    public void setattackbox(float x, float y)
+    {
+        attackBoxSize = new Vector2(x, y);
+    }
 }
