@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class DungeonPlayerController : MonoBehaviour
 {
@@ -12,7 +13,9 @@ public class DungeonPlayerController : MonoBehaviour
     public float attackRange = 1f;
     public Vector2 attackBoxSize = new Vector2(1f, 1f);
     public LayerMask enemyLayer;
-    public int damage = 1;
+    public int damage = 5;
+    public float attackCooldown = 1f;
+    private bool canAttack = true;
 
     [SerializeField] private AttachOnProximity wpn;
     [SerializeField] private Sprite north;
@@ -26,7 +29,6 @@ public class DungeonPlayerController : MonoBehaviour
     private void Start()
     {
         target = transform.position;
-        // SpriteChanger auf dem gleichen GameObject
         spriteChanger = GetComponent<SpriteRuntimeEditor>();
     }
 
@@ -60,17 +62,17 @@ public class DungeonPlayerController : MonoBehaviour
                 else
                     spriteChanger.ChangeSprite(south);
             }
+
             if (wpn != null && wpn.GetStatus())
             {
                 spriteChanger.ChangeSprite(holdingWeapon);
             }
         }
 
-
         transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
 
-        // Linke Maustaste: Angriff
-        if (Input.GetMouseButtonDown(0))
+        // Linke Maustaste: Angriff (mit Cooldown)
+        if (Input.GetMouseButtonDown(0) && canAttack)
         {
             Attack();
         }
@@ -78,6 +80,9 @@ public class DungeonPlayerController : MonoBehaviour
 
     private void Attack()
     {
+        canAttack = false;
+        StartCoroutine(ResetAttackCooldown());
+
         Vector3 attackCenter = transform.position + lastMoveDirection.normalized * attackRange;
 
         // Alle Gegner im Angriffsbereich finden
@@ -88,7 +93,7 @@ public class DungeonPlayerController : MonoBehaviour
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
-                //Debug.Log("Gegner getroffen!");
+                // Debug.Log("Gegner getroffen!");
             }
         }
 
@@ -96,9 +101,15 @@ public class DungeonPlayerController : MonoBehaviour
         Debug.DrawLine(transform.position, attackCenter, Color.red, 0.2f);
     }
 
+    private IEnumerator ResetAttackCooldown()
+    {
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
+        Debug.Log("Attack ready again");
+    }
+
     private void OnDrawGizmosSelected()
     {
-        // Nur im Editor sichtbar – zeigt das Angriffsrechteck
         Vector3 attackCenter = transform.position + lastMoveDirection.normalized * attackRange;
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(attackCenter, attackBoxSize);

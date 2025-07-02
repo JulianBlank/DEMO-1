@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using System.Collections.Generic;
+using System.Collections;
 public class AttachOnProximity : MonoBehaviour
 {
     public Transform player;
@@ -9,7 +10,8 @@ public class AttachOnProximity : MonoBehaviour
     private bool isAttached = false;
     private SpriteRenderer spriteRenderer;
     private Sprite originalSprite;
-
+    private bool canpickup;
+    private float resetpickup = 1f;
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -47,20 +49,30 @@ public class AttachOnProximity : MonoBehaviour
 
     void Attach()
     {
-        isAttached = true;
-        transform.SetParent(player);
-        transform.localPosition = offset;
-
-        if (spriteRenderer != null)
+        if (canpickup == true)
         {
-            spriteRenderer.sprite = null; 
-        }
+            StartCoroutine(ResetPickupcooldown());
+            isAttached = true;
+            transform.SetParent(player);
+            transform.localPosition = offset;
 
-        Debug.Log("Object attached to player.");
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.sprite = null;
+            }
+
+            Debug.Log("Object attached to player.");
+        }
     }
     public bool GetStatus()
     {
         return isAttached;
+    }
+    private IEnumerator ResetPickupcooldown()
+    {
+        yield return new WaitForSeconds(resetpickup);
+        canpickup = true;
+        Debug.Log("Pick up ready again");
     }
     void Detach()
     {

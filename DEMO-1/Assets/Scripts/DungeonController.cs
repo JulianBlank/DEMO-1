@@ -9,6 +9,7 @@ public class DungeonRoomManager : MonoBehaviour
     [Header("Räume in Reihenfolge")]
     public List<DungeonRoom> dungeonRooms;
 
+
     private int currentRoomIndex = 0;
     private int aliveEnemies = 0;
 
@@ -78,7 +79,11 @@ public class DungeonRoomManager : MonoBehaviour
         {
             Destroy(currentRoom.doorToNextRoom);
         }
-
+        if (currentRoom.blackscreen != null && currentRoom.black == true)
+        {
+            currentRoom.blackscreen.GetComponent<SpriteFader>().FadeOut(1f);
+            currentRoom.black = false;
+        }
         // Button nur einmal benutzbar machen
         if (currentRoom.progressButton != null)
         {
