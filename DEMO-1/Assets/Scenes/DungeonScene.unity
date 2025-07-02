@@ -551,10 +551,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 121957298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a34a28b5a7042a4c881c5fe7eaa0499, type: 3}
+  m_Script: {fileID: 11500000, guid: cb5057c42a739f146bf38ac4b95b4762, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomManager: {fileID: 904338638}
+  roomManager: {fileID: 0}
 --- !u!1 &261957016
 GameObject:
   m_ObjectHideFlags: 0
@@ -1214,10 +1214,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 674612261}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a34a28b5a7042a4c881c5fe7eaa0499, type: 3}
+  m_Script: {fileID: 11500000, guid: cb5057c42a739f146bf38ac4b95b4762, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomManager: {fileID: 904338638}
+  roomManager: {fileID: 0}
 --- !u!114 &674612263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1390,8 +1390,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1193494971
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: -3971767211219215134, guid: 23fe633744ac8c344a1172a17acceb42, type: 3}
   m_Color: {r: 0.84339625, g: 1, b: 0.8500941, a: 1}
@@ -1502,8 +1502,8 @@ Transform:
   m_GameObject: {fileID: 796618569}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.72, y: -4.34, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -5.51499, y: 2.17444, z: 0}
+  m_LocalScale: {x: 2.560361, y: 0.07084696, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1701,13 +1701,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 904338636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0e47252495d6ae47abb7fdc45fa5b4f, type: 3}
+  m_Script: {fileID: 11500000, guid: ca036ea0c5c23b2468200905324d0d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefabs:
   - {fileID: 1706444207950936316, guid: d4c94f7722383df479d9ced286f9ce2c, type: 3}
   dungeonRooms:
-  - roomName: Room1
+  - roomName: Raum_1
     spawnPoints:
     - {fileID: 1973496265}
     - {fileID: 1217823432}
@@ -1715,7 +1715,7 @@ MonoBehaviour:
     - {fileID: 1176914607}
     doorToNextRoom: {fileID: 796618569}
     progressButton: {fileID: 121957298}
-  - roomName: Room2
+  - roomName: Raum_2
     spawnPoints:
     - {fileID: 1433683540}
     - {fileID: 1124552682}
@@ -1723,6 +1723,10 @@ MonoBehaviour:
     - {fileID: 1496177845}
     doorToNextRoom: {fileID: 629897822}
     progressButton: {fileID: 674612261}
+  - roomName: 
+    spawnPoints: []
+    doorToNextRoom: {fileID: 0}
+    progressButton: {fileID: 0}
 --- !u!1 &938639226
 GameObject:
   m_ObjectHideFlags: 0
@@ -2106,9 +2110,9 @@ GameObject:
   - component: {fileID: 1481976978}
   - component: {fileID: 1481976980}
   m_Layer: 0
-  m_Name: Sword1
+  m_Name: Weapon
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2132,7 +2136,7 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
@@ -2153,18 +2157,18 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1303445877
+  m_SortingLayer: -1
   m_SortingOrder: 0
-  m_Sprite: {fileID: -3753825769889500098, guid: a594bebe57126f94dbe2a284cdef6d6d, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.13, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1481976979
@@ -2176,7 +2180,7 @@ Transform:
   m_GameObject: {fileID: 1481976976}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.61, y: -1.965, z: 0}
+  m_LocalPosition: {x: -3, y: 3.67, z: 0}
   m_LocalScale: {x: 13.076924, y: 10.625, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2191,13 +2195,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1481976976}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc136523043c69e4482e7e4d59a35d82, type: 3}
+  m_Script: {fileID: 11500000, guid: 58300bb6a56cf5c4f88ca3045788d406, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1809196340}
   triggerDistance: 2
-  offset: {x: 3, y: 0, z: 0}
-  sword_tex: {fileID: 0}
+  offset: {x: 1, y: 0, z: 0}
+  sword_sprite: {fileID: -3753825769889500098, guid: a594bebe57126f94dbe2a284cdef6d6d, type: 3}
 --- !u!1 &1496177845
 GameObject:
   m_ObjectHideFlags: 0
@@ -2295,20 +2299,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1809196335}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5665d548a4576c3459c904530ded4b46, type: 3}
+  m_Script: {fileID: 11500000, guid: 02da14a5cc4e2594596387b70f4c050d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 2
   attackRange: 1
-  attackBoxSize: {x: 20, y: 20}
+  attackBoxSize: {x: 1, y: 1}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
-  damage: 10
+  damage: 1
+  wpn: {fileID: 0}
   north: {fileID: 4814271557941635497, guid: cb4fb52acbebe8c4b9ae51bb4236e855, type: 3}
   south: {fileID: 2324236343598682440, guid: 2b9e40bbec197b444bc42a40f391be4b, type: 3}
   west: {fileID: 3373983171478037719, guid: de1b39145e1376d48a01baebf9bdd927, type: 3}
   east: {fileID: -2097619832946416524, guid: ecb16fc133673954b9759e418d479e8a, type: 3}
+  holdingWeapon: {fileID: 0}
 --- !u!61 &1809196337
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2446,8 +2452,8 @@ Transform:
   m_GameObject: {fileID: 1809196335}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.8328366, y: 3.225895, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 0.3368192}
+  m_LocalPosition: {x: -8.1125, y: 2.9463, z: 0}
+  m_LocalScale: {x: 0.4408, y: 0.4408, z: 0.3368192}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -2461,7 +2467,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1809196335}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19de5b2f54205f409f34de1937248fc, type: 3}
+  m_Script: {fileID: 11500000, guid: f610f72d34ca2ee42a79b96ca85b844d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 1000
@@ -2474,7 +2480,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1809196335}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 466b04c58fc88624d972e322177f6bea, type: 3}
+  m_Script: {fileID: 11500000, guid: d00c8f5820a8534489ab88ba1f7df855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1973496265
@@ -2655,12 +2661,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1987997609}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41065c397ae041d41bc23f165ec3b32a, type: 3}
+  m_Script: {fileID: 11500000, guid: c2f162a8891a47d449e5663470e5a67c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1809196340}
   smoothSpeed: 0.125
-  offset: {x: 0, y: 0, z: 5}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1 &2052011935
 GameObject:
   m_ObjectHideFlags: 0
@@ -2710,10 +2716,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2052011935}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a34a28b5a7042a4c881c5fe7eaa0499, type: 3}
+  m_Script: {fileID: 11500000, guid: cb5057c42a739f146bf38ac4b95b4762, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomManager: {fileID: 904338638}
+  roomManager: {fileID: 0}
 --- !u!114 &2052011938
 MonoBehaviour:
   m_ObjectHideFlags: 0

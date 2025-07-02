@@ -13,10 +13,13 @@ public class DungeonPlayerController : MonoBehaviour
     public Vector2 attackBoxSize = new Vector2(1f, 1f);
     public LayerMask enemyLayer;
     public int damage = 1;
+
+    [SerializeField] private AttachOnProximity wpn;
     [SerializeField] private Sprite north;
     [SerializeField] private Sprite south;
     [SerializeField] private Sprite west;
     [SerializeField] private Sprite east;
+    [SerializeField] private Sprite holdingWeapon;
 
     private SpriteRuntimeEditor spriteChanger;
 
@@ -56,6 +59,10 @@ public class DungeonPlayerController : MonoBehaviour
                     spriteChanger.ChangeSprite(north);
                 else
                     spriteChanger.ChangeSprite(south);
+            }
+            if (wpn != null && wpn.GetStatus())
+            {
+                spriteChanger.ChangeSprite(holdingWeapon);
             }
         }
 

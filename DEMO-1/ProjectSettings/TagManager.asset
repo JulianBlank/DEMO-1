@@ -38,8 +38,20 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Ground
+    uniqueID: 1193494971
+    locked: 0
+  - name: Items
+    uniqueID: 2991521419
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: NPCS & Player
+    uniqueID: 1727751849
+    locked: 0
+  - name: Other Objects
+    uniqueID: 2407063459
     locked: 0
   m_RenderingLayers:
   - Default
