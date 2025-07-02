@@ -16,7 +16,7 @@ public class AttachOnProximity : MonoBehaviour
 
         if (objectRenderer != null && objectRenderer.material.HasProperty("_MainTex"))
         {
-            originalTexture = objectRenderer.material.originalTexture;
+            originalTexture = objectRenderer.material.mainTexture;
         }
         else
         {
