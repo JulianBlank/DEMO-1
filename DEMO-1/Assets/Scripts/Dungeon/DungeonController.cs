@@ -1,24 +1,35 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+/// <summary>
+/// Verwaltet Dungeonräume, spawnt Gegner und steuert den Fortschritt von Raum zu Raum.
+/// </summary>
 public class DungeonRoomManager : MonoBehaviour
 {
     [Header("Gegner")]
+    [Tooltip("Liste der möglichen Gegner-Prefabs, die gespawnt werden können.")]
     public GameObject[] enemyPrefabs;
 
     [Header("Räume in Reihenfolge")]
+    [Tooltip("Reihenfolge der Dungeonräume.")]
     public List<DungeonRoom> dungeonRooms;
-
 
     private int currentRoomIndex = 0;
     private int aliveEnemies = 0;
 
-    void Start()
+    /// <summary>
+    /// Initialisiert den ersten Raum beim Start.
+    /// </summary>
+    private void Start()
     {
         StartRoom(currentRoomIndex);
     }
 
-    void StartRoom(int index)
+    /// <summary>
+    /// Startet den angegebenen Raum, deaktiviert den Fortschrittsbutton und spawnt Gegner.
+    /// </summary>
+    /// <param name="index">Index des Raums in der dungeonRooms-Liste.</param>
+    private void StartRoom(int index)
     {
         if (index >= dungeonRooms.Count)
         {
@@ -28,7 +39,7 @@ public class DungeonRoomManager : MonoBehaviour
 
         DungeonRoom room = dungeonRooms[index];
 
-        // Button deaktivieren (erscheint erst wenn Gegner tot)
+        // Fortschrittsbutton deaktivieren
         if (room.progressButton != null)
             room.progressButton.SetActive(false);
 
@@ -36,7 +47,11 @@ public class DungeonRoomManager : MonoBehaviour
         SpawnEnemies(room.spawnPoints);
     }
 
-    void SpawnEnemies(GameObject[] spawnPointObjects)
+    /// <summary>
+    /// Spawnt Gegner an den angegebenen Spawnpunkten und registriert OnDeath-Callback.
+    /// </summary>
+    /// <param name="spawnPointObjects">Array von GameObjects, deren Position als Spawnpunkt dient.</param>
+    private void SpawnEnemies(GameObject[] spawnPointObjects)
     {
         aliveEnemies = spawnPointObjects.Length;
 
@@ -51,11 +66,17 @@ public class DungeonRoomManager : MonoBehaviour
             );
 
             Enemy e = enemy.GetComponent<Enemy>();
-            e.OnDeath += HandleEnemyDeath;
+            if (e != null)
+                e.OnDeath += HandleEnemyDeath;
+            else
+                Debug.LogWarning("Enemy-Komponente fehlt auf instanziertem Gegner.");
         }
     }
 
-    void HandleEnemyDeath()
+    /// <summary>
+    /// Wird aufgerufen, wenn ein Gegner stirbt. Aktiviert bei 0 verbleibenden Gegnern den Fortschrittsbutton.
+    /// </summary>
+    private void HandleEnemyDeath()
     {
         aliveEnemies--;
 
@@ -64,31 +85,33 @@ public class DungeonRoomManager : MonoBehaviour
             DungeonRoom currentRoom = dungeonRooms[currentRoomIndex];
 
             if (currentRoom.progressButton != null)
-            {
                 currentRoom.progressButton.SetActive(true);
-            }
         }
     }
 
+    /// <summary>
+    /// Wird vom Fortschrittsbutton aufgerufen, zerstört die Tür, blendet Schwarzbild aus und startet nächsten Raum.
+    /// </summary>
     public void OnRoomProgressButtonClicked()
     {
         DungeonRoom currentRoom = dungeonRooms[currentRoomIndex];
 
-        // Tür zerstören
+        // Tür zur nächsten Kammer zerstören
         if (currentRoom.doorToNextRoom != null)
-        {
             Destroy(currentRoom.doorToNextRoom);
-        }
+
+        // Schwarzbild ausblenden
         if (currentRoom.blackscreen != null && currentRoom.black == true)
         {
-            currentRoom.blackscreen.GetComponent<SpriteFader>().FadeOut(1f);
+            SpriteFader fader = currentRoom.blackscreen.GetComponent<SpriteFader>();
+            if (fader != null)
+                fader.FadeOut(1f);
             currentRoom.black = false;
         }
-        // Button nur einmal benutzbar machen
+
+        // Button deaktivieren, damit er nur einmal genutzt werden kann
         if (currentRoom.progressButton != null)
-        {
             currentRoom.progressButton.SetActive(false);
-        }
 
         currentRoomIndex++;
         StartRoom(currentRoomIndex);
