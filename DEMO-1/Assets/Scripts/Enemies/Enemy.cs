@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class Enemy : MonoBehaviour
     public float attackCooldown = 1f;
 
     private Transform player;
+    NavMeshAgent agent;
     private float lastAttackTime;
 
     public event Action OnDeath;
@@ -16,15 +18,17 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
     }
 
     void Update()
     {
         if (player == null) return;
 
-        // Bewege dich in Richtung Spieler
-        Vector3 direction = (player.position - transform.position).normalized;
-        transform.position += speed * Time.deltaTime * direction;
+        
+        agent.SetDestination(player.position);
     }
 
     void OnCollisionStay2D(Collision2D collision)
