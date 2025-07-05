@@ -21,4 +21,13 @@ public class PlayerHealth : MonoBehaviour
             // Hier später Respawn/Restart/Deathscreen
         }
     }
+
+    public int getmaxhealth()
+    {
+        return maxHealth;
+    }
+    public int getcurrentHealth()
+    {
+        return currentHealth;
+    }
 }
