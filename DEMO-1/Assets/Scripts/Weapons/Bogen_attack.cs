@@ -2,17 +2,21 @@ using UnityEngine;
 
 public class Bogen_attack : MonoBehaviour
 {
-    public bool isequipped;
-    //public DungeonPlayerController attackboxchanger;
+    private bool isequipped;
+    private DungeonPlayerController dpc;
 
     void Update()
     {
-        //attackboxchanger = GetComponent<DungeonPlayercontroller>();
+        dpc = GetComponent<DungeonPlayerController>();
+        if (dpc.HasAnyWeapon())
+        {
+            isequipped = true;
+        }
 
         if (Input.GetMouseButtonDown(2) && isequipped == true)
         {
             Vector3 mouseScreenPos = Input.mousePosition;
-            //attackboxchanger.setattackbox(mouseScreenPos.x, mouseScreenPos.y);
+            dpc.SetAttackBoxSize(mouseScreenPos.x, mouseScreenPos.y);
 
         }
     }

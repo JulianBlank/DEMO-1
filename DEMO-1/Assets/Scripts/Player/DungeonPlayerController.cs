@@ -3,6 +3,7 @@ using System.Collections;
 
 /// <summary>
 /// Steuert den Spieler im Dungeon-Spiel, inklusive Bewegung, Angriff und Sprite-Wechsel basierend auf Richtung und Waffenstatus.
+/// Unterstützt mehrere Waffen.
 /// </summary>
 public class DungeonPlayerController : MonoBehaviour
 {
@@ -29,54 +30,52 @@ public class DungeonPlayerController : MonoBehaviour
     [Tooltip("Cooldown-Zeit zwischen Angriffen.")]
     public float attackCooldown = 1f;
 
-    private bool canAttack = true;
+    public bool canAttack = true;
 
-    [Tooltip("Referenz auf das Waffenobjekt.")]
-    [SerializeField] private AttachOnProximity wpn;
+    [Header("Waffen")]
+    [Tooltip("Primäre Waffe, z.B. Schwert.")]
+    [SerializeField] private AttachOnProximity primaryWeapon;
+
+    [Tooltip("Sekundäre Waffe, z.B. Schild, Bogen, etc.")]
+    [SerializeField] private AttachOnProximity secondaryWeapon;
 
     private SpriteRuntimeEditor spriteChanger;
 
     [Header("Sprites")]
-    [Tooltip("Sprite für Bewegung nach Norden.")]
     [SerializeField] private Sprite north;
-    [Tooltip("Sprite für Bewegung nach Süden.")]
     [SerializeField] private Sprite south;
-    [Tooltip("Sprite für Bewegung nach Westen.")]
     [SerializeField] private Sprite west;
-    [Tooltip("Sprite für Bewegung nach Osten.")]
     [SerializeField] private Sprite east;
 
-    [Tooltip("Sprite mit Schwert nach Norden.")]
     [SerializeField] private Sprite holdingSword_north;
-    [Tooltip("Sprite mit Schwert nach Süden.")]
     [SerializeField] private Sprite holdingSword_south;
-    [Tooltip("Sprite mit Schwert nach Westen.")]
     [SerializeField] private Sprite holdingSword_west;
-    [Tooltip("Sprite mit Schwert nach Osten.")]
     [SerializeField] private Sprite holdingSword_east;
 
-    /// <summary>
-    /// Initialisiert Komponenten und sucht ggf. das Waffenobjekt anhand des Tags.
-    /// </summary>
+    // Weitere Sprites für zweite Waffe könnten hier ergänzt werden...
+
     private void Start()
     {
         target = transform.position;
         spriteChanger = GetComponent<SpriteRuntimeEditor>();
 
-        if (wpn == null)
-        {
-            GameObject weaponGO = GameObject.FindGameObjectWithTag("Weapon");
-            if (weaponGO != null)
-                wpn = weaponGO.GetComponent<AttachOnProximity>();
-        }
-
-        if (wpn == null)
-            Debug.LogError("Waffe konnte nicht gefunden werden!");
+        TryFindWeapon(ref primaryWeapon, "Weapon");
+        TryFindWeapon(ref secondaryWeapon, "SecondaryWeapon");
     }
 
-    /// <summary>
-    /// Wird einmal pro Frame aufgerufen. Behandelt Eingaben, Bewegung und Angriff.
-    /// </summary>
+    private void TryFindWeapon(ref AttachOnProximity weapon, string tag)
+    {
+        if (weapon == null)
+        {
+            GameObject go = GameObject.FindGameObjectWithTag(tag);
+            if (go != null)
+                weapon = go.GetComponent<AttachOnProximity>();
+        }
+
+        if (weapon == null)
+            Debug.LogWarning($"Waffe mit Tag '{tag}' konnte nicht gefunden werden.");
+    }
+
     private void Update()
     {
         HandleMovementInput();
@@ -84,9 +83,6 @@ public class DungeonPlayerController : MonoBehaviour
         HandleAttackInput();
     }
 
-    /// <summary>
-    /// Behandelt rechte Maustaste und berechnet Bewegungsrichtung.
-    /// </summary>
     private void HandleMovementInput()
     {
         if (Input.GetMouseButtonDown(1))
@@ -104,17 +100,11 @@ public class DungeonPlayerController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Bewegt den Spieler zum Ziel.
-    /// </summary>
     private void MovePlayer()
     {
         transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
     }
 
-    /// <summary>
-    /// Behandelt linken Mausklick für Angriffe.
-    /// </summary>
     private void HandleAttackInput()
     {
         if (Input.GetMouseButtonDown(0) && canAttack)
@@ -124,12 +114,20 @@ public class DungeonPlayerController : MonoBehaviour
     }
 
     /// <summary>
+    /// Ermittelt, ob irgendeine Waffe aktiv ist.
+    /// </summary>
+    public bool HasAnyWeapon()
+    {
+        return (primaryWeapon != null && primaryWeapon.GetStatus()) ||
+               (secondaryWeapon != null && secondaryWeapon.GetStatus());
+    }
+
+    /// <summary>
     /// Aktualisiert das aktuelle Sprite basierend auf Richtung und Waffenstatus.
     /// </summary>
-    /// <param name="moveDirection">Richtung der Bewegung.</param>
     private void UpdateSprite(Vector3 moveDirection)
     {
-        bool hasWeapon = wpn != null && wpn.GetStatus();
+        bool hasWeapon = HasAnyWeapon();
         bool isMovingHorizontally = Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y);
 
         if (hasWeapon)
@@ -148,9 +146,6 @@ public class DungeonPlayerController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Führt einen Angriff in die zuletzt gewählte Richtung durch.
-    /// </summary>
     private void Attack()
     {
         canAttack = false;
@@ -169,9 +164,6 @@ public class DungeonPlayerController : MonoBehaviour
         Debug.DrawLine(transform.position, attackCenter, Color.red, 0.2f);
     }
 
-    /// <summary>
-    /// Setzt den Angriff nach Ablauf des Cooldowns zurück.
-    /// </summary>
     private IEnumerator ResetAttackCooldown()
     {
         yield return new WaitForSeconds(attackCooldown);
@@ -179,9 +171,6 @@ public class DungeonPlayerController : MonoBehaviour
         Debug.Log("Attack ready again");
     }
 
-    /// <summary>
-    /// Zeichnet die Angriffsbox im Editor zur besseren Sichtbarkeit.
-    /// </summary>
     private void OnDrawGizmosSelected()
     {
         Vector3 attackCenter = transform.position + lastMoveDirection.normalized * attackRange;
@@ -189,16 +178,7 @@ public class DungeonPlayerController : MonoBehaviour
         Gizmos.DrawWireCube(attackCenter, attackBoxSize);
     }
 
-    /// <summary>
-    /// Setzt die Reichweite des Angriffs.
-    /// </summary>
-    /// <param name="range">Neue Angriffsreichweite.</param>
     public void SetAttackRange(float range) => attackRange = range;
 
-    /// <summary>
-    /// Setzt die Größe der Angriffsbox.
-    /// </summary>
-    /// <param name="width">Breite der Box.</param>
-    /// <param name="height">Höhe der Box.</param>
     public void SetAttackBoxSize(float width, float height) => attackBoxSize = new Vector2(width, height);
 }
