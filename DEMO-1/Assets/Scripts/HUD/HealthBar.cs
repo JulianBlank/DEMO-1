@@ -6,12 +6,14 @@ public class HealthBar : MonoBehaviour
     [SerializeField] private Image healthFillImage; // UI Image that fills
     [SerializeField] private PlayerHealth ph;
 
-    private RectTransform rectTransform;
-
     void Start()
     {
-        // Now healthFillImage is definitely assigned
-        rectTransform = healthFillImage.GetComponent<RectTransform>();
+        if (healthFillImage == null)
+        {
+            Debug.LogError("Health Fill Image not assigned!");
+            return;
+        }
+
         UpdateHealthBar();
     }
 
@@ -22,12 +24,10 @@ public class HealthBar : MonoBehaviour
 
     private void UpdateHealthBar()
     {
-        if (rectTransform != null && ph != null)
+        if (healthFillImage != null && ph != null)
         {
-            float healthPercent = (float)ph.getcurrentHealth() / ph.getmaxhealth();
-            Vector3 newScale = rectTransform.localScale;
-            newScale.y = healthPercent;
-            rectTransform.localScale = newScale;
+            float healthPercent = Mathf.Clamp01((float)ph.getcurrentHealth() / ph.getmaxhealth());
+            healthFillImage.fillAmount = healthPercent;
         }
     }
 }
