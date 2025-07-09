@@ -21,6 +21,8 @@ public class Ghost : MonoBehaviour
 
     public event Action OnDeath;
 
+    private SpriteRuntimeEditor spriteChanger;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
