@@ -2,14 +2,14 @@ using UnityEngine;
 using System;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class Ghost : MonoBehaviour
 {
     public int health = 5;
     public int damage = 1;
     public float speed = 2f;
 
     [Header("Attack Settings")]
-    public float attackCooldown_1 = 1f;
+    public float attackCooldown = 1f;
     public GameObject projectilePrefab;
 
     private Transform player;
@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
 
     public event Action OnDeath;
 
-    private void Start()
+    void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
         agent = GetComponent<NavMeshAgent>();
@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void Update()
+    void Update()
     {
         if (player == null) return;
 
@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour
         Projectile.CreateProjectile(projectilePrefab, transform.position, player.position);
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && Time.time > lastAttackTime + attackCooldown)
         {
