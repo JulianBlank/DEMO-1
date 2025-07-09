@@ -66,6 +66,7 @@ public class Ghost : MonoBehaviour
             ShootAtPlayer();
             lastAttackTime = Time.time;
         }
+        UpdateSprite(direction.normalized); // <<< Sprite-Wechsel basierend auf Bewegung
     }
 
     void ShootAtPlayer()
