@@ -13,7 +13,7 @@ public class Ghost : MonoBehaviour
     public GameObject projectilePrefab;
 
     [Header("Follow Settings")]
-    public float stoppingDistance = 3f; // Mindestabstand zum Spieler
+    public float stoppingDistance = 3f; // Abstand, bei dem der Ghost stoppt
 
     private Transform player;
     private NavMeshAgent agent;
@@ -25,7 +25,6 @@ public class Ghost : MonoBehaviour
 
     [Header("Sprites")]
     [SerializeField] private Sprite north, south, west, east;
-
     [SerializeField] private Sprite attack_north, attack_south, attack_west, attack_east;
 
     void Start()
@@ -43,25 +42,21 @@ public class Ghost : MonoBehaviour
             agent.isStopped = false;
         }
     }
-    
+
     void Update()
     {
         if (player == null) return;
 
-        // Ziel setzen – NavMeshAgent stoppt automatisch beim erreichen des stoppingDistance-Abstands
+        // Spieler als Ziel setzen
         agent.SetDestination(player.position);
 
-        // Agent stoppen, wenn nah genug
+        // Stoppen, wenn nah genug
         if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending)
-        {
             agent.isStopped = true;
-        }
         else
-        {
             agent.isStopped = false;
-        }
 
-        // Angriff
+        // Angriff ausführen, wenn Cooldown vorbei
         if (Time.time > lastAttackTime + attackCooldown)
         {
             ShootAtPlayer();
@@ -88,15 +83,16 @@ public class Ghost : MonoBehaviour
             }
         }
     }
-    
+
+    // Wechselt den Sprite je nach Bewegungsrichtung und Angriffsstatus
     private void UpdateSprite(Vector3 moveDirection)
     {
         bool isMovingHorizontally = Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y);
-    
+
         if (isattacking)
         {
             if (isMovingHorizontally)
-                spriteChanger.ChangeSprite(moveDirection.x > 0 ? attack_west :attack_east);
+                spriteChanger.ChangeSprite(moveDirection.x > 0 ? attack_west : attack_east);
             else
                 spriteChanger.ChangeSprite(moveDirection.y > 0 ? attack_north : attack_south);
         }
@@ -107,7 +103,6 @@ public class Ghost : MonoBehaviour
             else
                 spriteChanger.ChangeSprite(moveDirection.y > 0 ? north : south);
         }
-        
     }
 
     public void TakeDamage(int amount)
@@ -120,4 +115,3 @@ public class Ghost : MonoBehaviour
         }
     }
 }
-
