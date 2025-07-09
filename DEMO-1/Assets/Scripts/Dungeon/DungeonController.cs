@@ -1,9 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-/// <summary>
-/// Verwaltet Dungeonräume, spawnt Gegner und steuert den Fortschritt von Raum zu Raum.
-/// </summary>
 public class DungeonRoomManager : MonoBehaviour
 {
     [Header("Gegner")]
@@ -14,21 +11,21 @@ public class DungeonRoomManager : MonoBehaviour
     [Tooltip("Reihenfolge der Dungeonräume.")]
     public List<DungeonRoom> dungeonRooms;
 
+    // Index des aktuell aktiven Raums in der dungeonRooms-Liste
     private int currentRoomIndex = 0;
+
+    // Anzahl der aktuell lebenden Gegner im Raum
     private int aliveEnemies = 0;
 
-    /// <summary>
-    /// Initialisiert den ersten Raum beim Start.
-    /// </summary>
+    // Unity-Methode, die beim Start des Spiels oder der Szene aufgerufen wird.
+    // Initialisiert den ersten Dungeonraum.
     private void Start()
     {
         StartRoom(currentRoomIndex);
     }
 
-    /// <summary>
-    /// Startet den angegebenen Raum, deaktiviert den Fortschrittsbutton und spawnt Gegner.
-    /// </summary>
-    /// <param name="index">Index des Raums in der dungeonRooms-Liste.</param>
+    // Startet den Raum an der angegebenen Position in dungeonRooms.
+    // Deaktiviert den Fortschrittsbutton und spawnt Gegner an definierten Spawnpunkten.
     private void StartRoom(int index)
     {
         if (index >= dungeonRooms.Count)
@@ -39,18 +36,16 @@ public class DungeonRoomManager : MonoBehaviour
 
         DungeonRoom room = dungeonRooms[index];
 
-        // Fortschrittsbutton deaktivieren
+        // Fortschrittsbutton deaktivieren, um voreilige Fortschritte zu verhindern
         if (room.progressButton != null)
             room.progressButton.SetActive(false);
 
-        // Gegner spawnen
+        // Gegner an den festgelegten Spawnpunkten erzeugen
         SpawnEnemies(room.spawnPoints);
     }
 
-    /// <summary>
-    /// Spawnt Gegner an den angegebenen Spawnpunkten und registriert OnDeath-Callback.
-    /// </summary>
-    /// <param name="spawnPointObjects">Array von GameObjects, deren Position als Spawnpunkt dient.</param>
+    // Spawnt Gegner an den angegebenen Spawnpunkten.
+    // Registriert den OnDeath-Callback für jeden Gegner, um den Fortschritt zu überwachen.
     private void SpawnEnemies(GameObject[] spawnPointObjects)
     {
         aliveEnemies = spawnPointObjects.Length;
@@ -59,12 +54,14 @@ public class DungeonRoomManager : MonoBehaviour
         {
             Transform spawn = obj.transform;
 
+            // Zufälliges Gegner-Prefab auswählen und instanziieren
             GameObject enemy = Instantiate(
                 enemyPrefabs[Random.Range(0, enemyPrefabs.Length)],
                 spawn.position,
                 Quaternion.identity
             );
 
+            // Enemy-Komponente abrufen und OnDeath-Event abonnieren
             Enemy e = enemy.GetComponent<Enemy>();
             if (e != null)
                 e.OnDeath += HandleEnemyDeath;
@@ -73,9 +70,9 @@ public class DungeonRoomManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Wird aufgerufen, wenn ein Gegner stirbt. Aktiviert bei 0 verbleibenden Gegnern den Fortschrittsbutton.
-    /// </summary>
+    // Callback-Methode, die aufgerufen wird, wenn ein Gegner stirbt.
+    // Reduziert die Anzahl lebender Gegner und aktiviert den Fortschrittsbutton,
+    // sobald alle Gegner besiegt wurden.
     private void HandleEnemyDeath()
     {
         aliveEnemies--;
@@ -84,35 +81,37 @@ public class DungeonRoomManager : MonoBehaviour
         {
             DungeonRoom currentRoom = dungeonRooms[currentRoomIndex];
 
+            // Fortschrittsbutton aktivieren, damit der Spieler zum nächsten Raum wechseln kann
             if (currentRoom.progressButton != null)
                 currentRoom.progressButton.SetActive(true);
         }
     }
 
-    /// <summary>
-    /// Wird vom Fortschrittsbutton aufgerufen, zerstört die Tür, blendet Schwarzbild aus und startet nächsten Raum.
-    /// </summary>
+    // Wird vom Fortschrittsbutton des aktuellen Raums aufgerufen.
+    // Zerstört die Tür zum nächsten Raum, blendet das Schwarzbild aus,
+    // deaktiviert den Button und startet den nächsten Raum.
     public void OnRoomProgressButtonClicked()
     {
         DungeonRoom currentRoom = dungeonRooms[currentRoomIndex];
 
-        // Tür zur nächsten Kammer zerstören
+        // Tür zum nächsten Raum zerstören, damit der Spieler durchgehen kann
         if (currentRoom.doorToNextRoom != null)
             Destroy(currentRoom.doorToNextRoom);
 
-        // Schwarzbild ausblenden
+        // Schwarzbild ausblenden, falls aktiv
         if (currentRoom.blackscreen != null && currentRoom.black == true)
         {
             SpriteFader fader = currentRoom.blackscreen.GetComponent<SpriteFader>();
             if (fader != null)
-                fader.FadeOut(1f);
+                fader.FadeOut(1f); // Dauer der Ausblendung in Sekunden
             currentRoom.black = false;
         }
 
-        // Button deaktivieren, damit er nur einmal genutzt werden kann
+        // Fortschrittsbutton deaktivieren, damit er nicht erneut gedrückt wird
         if (currentRoom.progressButton != null)
             currentRoom.progressButton.SetActive(false);
 
+        // Nächsten Raum starten
         currentRoomIndex++;
         StartRoom(currentRoomIndex);
     }
