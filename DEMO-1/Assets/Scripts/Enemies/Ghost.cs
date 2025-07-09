@@ -24,7 +24,11 @@ public class Ghost : MonoBehaviour
     private SpriteRuntimeEditor spriteChanger;
 
     [Header("Sprites")]
-    [SerializeField] private Sprite north, south, west, east;
+    [Header("Sprites")]
+    [SerializeField] private Sprite north;
+    [SerializeField] private Sprite south;
+    [SerializeField] private Sprite west;
+    [SerializeField] private Sprite east;
     [SerializeField] private Sprite attack_north, attack_south, attack_west, attack_east;
 
     void Start()
