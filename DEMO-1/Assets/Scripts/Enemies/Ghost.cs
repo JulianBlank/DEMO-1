@@ -12,6 +12,9 @@ public class Ghost : MonoBehaviour
     public float attackCooldown = 1f;
     public GameObject projectilePrefab;
 
+    [Header("Follow Settings")]
+    public float stoppingDistance = 3f; // Mindestabstand zum Spieler
+
     private Transform player;
     private NavMeshAgent agent;
     private float lastAttackTime;
@@ -27,6 +30,9 @@ public class Ghost : MonoBehaviour
         {
             agent.updateRotation = false;
             agent.updateUpAxis = false;
+            agent.speed = speed;
+            agent.stoppingDistance = stoppingDistance;
+            agent.isStopped = false;
         }
     }
 
@@ -34,10 +40,20 @@ public class Ghost : MonoBehaviour
     {
         if (player == null) return;
 
-        // Move towards the player
+        // Ziel setzen – NavMeshAgent stoppt automatisch beim erreichen des stoppingDistance-Abstands
         agent.SetDestination(player.position);
 
-        // Attack the player with a projectile
+        // Agent stoppen, wenn nah genug
+        if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending)
+        {
+            agent.isStopped = true;
+        }
+        else
+        {
+            agent.isStopped = false;
+        }
+
+        // Angriff
         if (Time.time > lastAttackTime + attackCooldown)
         {
             ShootAtPlayer();
@@ -49,7 +65,6 @@ public class Ghost : MonoBehaviour
     {
         if (projectilePrefab == null || player == null) return;
 
-        // Spawn the projectile at the enemy's position, and send it to the player's position
         Projectile.CreateProjectile(projectilePrefab, transform.position, player.position);
     }
 
