@@ -23,6 +23,11 @@ public class Ghost : MonoBehaviour
 
     private SpriteRuntimeEditor spriteChanger;
 
+    [Header("Sprites")]
+    [SerializeField] private Sprite north, south, west, east;
+
+    [SerializeField] private Sprite attack_north, attack_south, attack_west, attack_east;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
