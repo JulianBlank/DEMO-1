@@ -10,7 +10,7 @@ public class Ghost : MonoBehaviour
 
     [Header("Attack Settings")]
     public float attackCooldown = 1f;
-    public Prefab projectilePrefab;
+    public Gameobject projectilePrefab;
 
     [Header("Follow Settings")]
     public float stoppingDistance = 3f; // Abstand, bei dem der Ghost stoppt
