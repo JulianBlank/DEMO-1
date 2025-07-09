@@ -18,7 +18,7 @@ public class Ghost : MonoBehaviour
     private Transform player;
     private NavMeshAgent agent;
     private float lastAttackTime;
-
+    private bool isattacking;
     public event Action OnDeath;
 
     private SpriteRuntimeEditor spriteChanger;
@@ -32,6 +32,7 @@ public class Ghost : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
         agent = GetComponent<NavMeshAgent>();
+        spriteChanger = GetComponent<SpriteRuntimeEditor>();
 
         if (agent != null)
         {
@@ -42,7 +43,7 @@ public class Ghost : MonoBehaviour
             agent.isStopped = false;
         }
     }
-
+    
     void Update()
     {
         if (player == null) return;
@@ -86,6 +87,27 @@ public class Ghost : MonoBehaviour
                 lastAttackTime = Time.time;
             }
         }
+    }
+    
+    private void UpdateSprite(Vector3 moveDirection)
+    {
+        bool isMovingHorizontally = Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y);
+    
+        if (isattacking)
+        {
+            if (isMovingHorizontally)
+                spriteChanger.ChangeSprite(moveDirection.x > 0 ? attack_west :attack_east);
+            else
+                spriteChanger.ChangeSprite(moveDirection.y > 0 ? attack_north : attack_south);
+        }
+        else
+        {
+            if (isMovingHorizontally)
+                spriteChanger.ChangeSprite(moveDirection.x > 0 ? west : east);
+            else
+                spriteChanger.ChangeSprite(moveDirection.y > 0 ? north : south);
+        }
+        
     }
 
     public void TakeDamage(int amount)
