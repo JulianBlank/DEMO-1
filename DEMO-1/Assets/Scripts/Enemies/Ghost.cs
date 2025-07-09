@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     public float speed = 2f;
 
     [Header("Attack Settings")]
-    public float attackCooldown_:1 = 1f;
+    public float attackCooldown_1 = 1f;
     public GameObject projectilePrefab;
 
     private Transform player;
