@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     public float speed = 2f;
 
     [Header("Attack Settings")]
-    public float attackCooldown = 1f;
+    public float attackCooldown_:1 = 1f;
     public GameObject projectilePrefab;
 
     private Transform player;
@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
 
     public event Action OnDeath;
 
-    void Start()
+    private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
         agent = GetComponent<NavMeshAgent>();
@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (player == null) return;
 
@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour
         Projectile.CreateProjectile(projectilePrefab, transform.position, player.position);
     }
 
-    void OnCollisionStay2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && Time.time > lastAttackTime + attackCooldown)
         {
